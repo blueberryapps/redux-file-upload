@@ -36,7 +36,7 @@ export default function fileUploadReducer(state = initialState, action) {
       const { identificator } = action.meta;
 
       const newUploadingDocument = action.payload.map(
-        uploadingDocument => new UploadingDocument(uploadingDocument)
+        uploadingDocument => new UploadingDocument({ file: uploadingDocument })
       );
 
       return state.updateIn(['uploadingDocuments', identificator], uploadingDocuments =>
@@ -45,37 +45,29 @@ export default function fileUploadReducer(state = initialState, action) {
     }
 
     case actions.FILE_UPLOAD_PROGRESS: {
-      const { identificator, file, fileType, progress } = action.payload;
+      const { identificator, file, progress, isImage, isDoc } = action.payload;
 
-      switch (fileType) {
-        case 'image': {
-          return updateUploadingImage(state, identificator, file, uploadingImage =>
-            uploadingImage.set('progress', Math.round(progress))
-          );
-        }
-        case 'document': {
-          return updateUploadingDocument(state, identificator, file, uploadingDocument =>
-            uploadingDocument.set('progress', Math.round(progress))
-          );
-        }
-      }
+      if (isImage)
+        return updateUploadingImage(state, identificator, file, uploadingImage =>
+          uploadingImage.set('progress', Math.round(progress))
+        );
+      if (isDoc)
+        return updateUploadingDocument(state, identificator, file, uploadingDocument =>
+          uploadingDocument.set('progress', Math.round(progress))
+        );
       return state;
     }
 
-    case actions.FILE_UPLOAD_FILE_ERROR: {
-      const { identificator, file, fileType, error } = action.payload;
-      switch (fileType) {
-        case 'image': {
-          return updateUploadingImage(state, identificator, file, uploadingImage =>
-            uploadingImage.set('error', error)
-          );
-        }
-        case 'document': {
-          return updateUploadingDocument(state, identificator, file, uploadingDocument =>
-            uploadingDocument.set('error', error)
-          );
-        }
-      }
+    case actions.FILE_UPLOAD_ERROR: {
+      const { identificator, file, error, isImage, isDoc } = action.payload;
+      if (isImage)
+        return updateUploadingImage(state, identificator, file, uploadingImage =>
+          uploadingImage.set('error', error)
+        );
+      if (isDoc)
+        return updateUploadingDocument(state, identificator, file, uploadingDocument =>
+          uploadingDocument.set('error', error)
+        );
       return state;
     }
 

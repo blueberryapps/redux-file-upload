@@ -23,7 +23,7 @@ export default class DocumentPreview extends Component {
 
     return (
       <div style={inheritedStyle} {...propsWithoutStyle}>
-        <div style={styles.photoWrapper}>
+        <div style={styles.fileWrapper}>
           <strong>Processing</strong>
           <br />
           <p> {fileName}</p>
@@ -35,9 +35,7 @@ export default class DocumentPreview extends Component {
       </div>
     );
   }
-
 }
-
 
 const styles = {
   percentage: {
@@ -52,31 +50,9 @@ const styles = {
     transform: 'translateX(-50%) translateY(-50%)'
   },
 
-  photo: {
-    maxWidth: '100%',
-  },
-
-  photoWrapper: {
+  fileWrapper: {
     maxHeight: '186px',
     position: 'relative'
-  },
-
-  remove: {
-    background: 'rgba(0, 0, 0, .5)',
-    border: '0',
-    outline: '0',
-    position: 'absolute',
-    right: '0',
-    top: '0',
-    padding: '4px',
-    transition: 'all .1s linear',
-    ':hover': {
-      background: 'rgba(0, 0, 0, .8)'
-    }
-  },
-
-  row: {
-    margin: '0 -5px'
   },
 
   wrapper: {

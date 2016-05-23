@@ -9,8 +9,8 @@ export const FILE_UPLOAD_ADD_UPLOADING_DOCUMENTS = 'FILE_UPLOAD_ADD_UPLOADING_DO
 export const FILE_UPLOAD_ADD_UPLOADING_DOCUMENTS_SUCCESS = 'FILE_UPLOAD_ADD_UPLOADING_DOCUMENTS_SUCCESS';
 export const FILE_UPLOAD_ADD_UPLOADING_IMAGES = 'FILE_UPLOAD_ADD_UPLOADING_IMAGES';
 export const FILE_UPLOAD_ADD_UPLOADING_IMAGES_SUCCESS = 'FILE_UPLOAD_ADD_UPLOADING_IMAGES_SUCCESS';
-export const FILE_UPLOAD_FILE_ERROR = 'FILE_UPLOAD_FILE_ERROR';
-export const FILE_UPLOAD_FILE_COMPLETE = 'FILE_UPLOAD_FILE_COMPLETE';
+export const FILE_UPLOAD_ERROR = 'FILE_UPLOAD_ERROR';
+export const FILE_UPLOAD_COMPLETE = 'FILE_UPLOAD_COMPLETE';
 export const FILE_UPLOAD_MULTIPLE_FILE_UPLOAD = 'FILE_UPLOAD_MULTIPLE_FILE_UPLOAD';
 export const FILE_UPLOAD_PROGRESS = 'FILE_UPLOAD_PROGRESS';
 
@@ -35,11 +35,11 @@ function getImageThumbnail(imageFile) {
   });
 }
 
-function uploadFile(dispatch, identificator, file, fileType, type = 'otherDocument') {
+function uploadFile(dispatch, url, identificator, file, uploadType) {
   return new Promise(resolve => {
     FileAPI.upload({
       data: {
-        type
+        type: uploadType
       },
       files: {
         file
@@ -47,7 +47,7 @@ function uploadFile(dispatch, identificator, file, fileType, type = 'otherDocume
       complete: resolve,
       fileprogress: (...args) => dispatch(fileProgress(identificator, ...args)),
       filecomplete: (...args) => dispatch(fileComplete(identificator, ...args)),
-      url: '/webapi/client/attachments',
+      url,
     });
   });
 }
@@ -86,11 +86,11 @@ export function addUploadingDocs(identificator, docFiles) {
   };
 }
 
-export function uploadFiles(identificator, files, type, fileType, concurrency = 2) {
+export function uploadFiles(identificator, url, files, type, uploadType, concurrency = 2) {
   return ({ dispatch }) => {
     const uploadFilePromise = Promise.map(
       files,
-      file => uploadFile(dispatch, identificator, file, fileType, type),
+      file => uploadFile(dispatch, url, identificator, file, uploadType),
       { concurrency }
     );
 
@@ -122,21 +122,21 @@ export function fileProgress(identificator, event, file, fileType) {
 
   return {
     type: FILE_UPLOAD_PROGRESS,
-    payload: { identificator, file, fileType, progress }
+    payload: { identificator, file, fileType, progress, isImage: isImage(file), isDoc: isDoc(file) }
   };
 }
 
 export function fileComplete(identificator, error, xhr, file) {
   if (error)
     return {
-      type: FILE_UPLOAD_FILE_ERROR,
-      payload: { identificator, file, error }
+      type: FILE_UPLOAD_ERROR,
+      payload: { identificator, file, error, isImage: isImage(file), isDoc: isDoc(file) }
     };
 
   const { photo } = JSON.parse(xhr.response);
 
   return {
-    type: FILE_UPLOAD_FILE_COMPLETE,
+    type: FILE_UPLOAD_COMPLETE,
     payload: { identificator, file, photo }
   };
 }

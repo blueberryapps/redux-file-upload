@@ -3,26 +3,20 @@ import DocumentPreview from './DocumentPreview.react';
 import ImagePreview from './ImagePreview.react';
 import Radium from 'radium';
 import React, { PropTypes as RPT } from 'react';
-import { connect } from 'react-redux';
 
-@connect(state => {
-  return {
-    documentUpload: state.documentUpload
-  };
-})
 @Radium
 export default class UploadPreview extends Component {
 
   static propTypes = {
-    documentUpload: RPT.object.isRequired
+    fileUpload: RPT.object.isRequired
   };
 
   render() {
-    const { documentUpload, ...containerProps } = this.props;
+    const { fileUpload, ...containerProps } = this.props;
     const inheritedStyle = containerProps.style;
     const propsWithoutStyle = { ...containerProps };
-    const uploadingImages = documentUpload.getIn(['uploadingImages', 'docsUpload']);
-    const uploadingDocuments = documentUpload.getIn(['uploadingDocuments', 'docsUpload']);
+    const uploadingImages = fileUpload.getIn(['uploadingImages', 'docsUpload']);
+    const uploadingDocuments = fileUpload.getIn(['uploadingDocuments', 'docsUpload']);
     delete propsWithoutStyle.style;
 
     return (

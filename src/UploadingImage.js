@@ -1,11 +1,11 @@
 import { Record } from 'immutable';
 
 const UploadingImage = Record({
-  error: null,
   dataURL: null,
+  error: null,
   file: null,
+  photo: null,
   progress: 0,
-  photo: null
 });
 
 export default UploadingImage;

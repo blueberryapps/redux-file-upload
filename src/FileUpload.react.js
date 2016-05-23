@@ -12,8 +12,12 @@ const FileAPI = process.env.IS_BROWSER ? Promise.promisifyAll(require('fileapi')
 export default class FileUpload extends Component {
 
   static propTypes = {
+    children: RPT.element,
+    dropzoneStyle: RPT.object,
+    dropzoneActiveStyle: RPT.object,
     identificator: RPT.string.isRequired,
     uploadType: RPT.string.isRequired,
+    url: RPT.string.isRequired,
     multiple: RPT.bool
   };
 
@@ -70,6 +74,7 @@ export default class FileUpload extends Component {
     const {
       identificator,
       uploadType,
+      url
      } = this.props;
 
     const { dispatch } = this.context.store;
@@ -84,11 +89,11 @@ export default class FileUpload extends Component {
 
     if (!!imageFiles.length) {
       dispatch(addUploadingImages(identificator, imageFiles));
-      dispatch(uploadFiles(identificator, imageFiles, 'image', uploadType));
+      dispatch(uploadFiles(identificator, url, imageFiles, 'image', uploadType));
     }
     if (!!docFiles.length) {
       dispatch(addUploadingDocs(identificator, docFiles));
-      dispatch(uploadFiles(identificator, docFiles, 'document', uploadType));
+      dispatch(uploadFiles(identificator, url, docFiles, 'document', uploadType));
     }
   }
 
@@ -110,14 +115,14 @@ export default class FileUpload extends Component {
   }
 
   render() {
-    const { multiple } = this.props;
+    const { children, dropzoneActiveStyle, dropzoneStyle, multiple } = this.props;
 
     const { dropzoneActive } = this.state;
 
     return (
-      <div style={styles.wrapper}>
+      <div>
         <form ref="fileUpload">
-          <label style={[styles.dropzone.base, dropzoneActive && styles.dropzone.active]}>
+          <label style={[dropzoneStyle || styles.dropzone.base, dropzoneActive && (dropzoneActiveStyle || styles.dropzone.active)]}>
             <input
               id={DROPZONE_ID}
               multiple={multiple}
@@ -125,9 +130,7 @@ export default class FileUpload extends Component {
               style={styles.input}
               type="file"
             />
-            <p style={styles.text.base}>
-              <div style={styles.placeholder}>something</div>
-            </p>
+          {children}
           </label>
         </form>
       </div>
@@ -137,75 +140,27 @@ export default class FileUpload extends Component {
 }
 
 const styles = {
-  heading: {
-    fontSize: '48px',
-    margin:   0
-  },
-
-  infoText: {
-    marginBottom: '32px',
-    marginTop:    '40px'
-  },
-
-  placeholder: {
-    // color:     colors.gray,
-    fontSize:  '12px',
-    textAlign: 'center'
-  },
-
-  uploadWrapper: {
-    textAlign: 'center'
-  },
-  upload: {
-    margin: '16px auto 0'
-  },
-
   dropzone: {
     base: {
       backgroundColor: 'white',
-      border:          '2px solid white',
-      padding:         '24px',
       display: 'block',
       position: 'relative',
-      textAlign: 'center',
-      transition: '.2s'
+      textAlign: 'center'
     },
     active: {
-      border:      '2px dashed',
-      // borderColor: colors.primary
+      border: '1px solid grey',
     }
   },
 
   input: {
+    bottom: 0,
+    cursor: 'pointer',
+    left: 0,
     opacity: 0,
     position: 'absolute',
-    left: 0,
     right: 0,
     top: 0,
-    bottom: 0,
     width: '100%',
-    zIndex: 1,
-    cursor: 'pointer'
+    zIndex: 1
   },
-
-  text: {
-    base: {
-      fontSize: '1.4rem',
-      margin: '0',
-      position: 'absolute',
-      top: '50%',
-      left: '5px',
-      right: '5px',
-      transform: 'translateY(-50%)'
-    },
-    strong: {
-      borderBottom: '1px solid purple',
-      color: 'purple',
-      fontWeight: '300'
-    }
-  },
-
-  wrapper: {
-    padding: '30px 0'
-  }
 };
