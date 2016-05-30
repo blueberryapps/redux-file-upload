@@ -1,6 +1,5 @@
 const FileAPI = process.env.IS_BROWSER ? require('fileapi') : null;
-const IMAGE_TYPES = /^image\/(jpe?g|png)$/i;
-const DOC_TYPES = /^application\/pdf$/i;
+const IMAGE_TYPES = /^image\/(jpe?g|png|gif|jf?if|tiff?)$/i;
 
 export const THUMBNAIL_WIDTH = 200;
 export const THUMBNAIL_HEIGHT = 200;
@@ -35,12 +34,10 @@ function getImageThumbnail(imageFile) {
   });
 }
 
-function uploadFile(dispatch, url, identificator, file, uploadType) {
+function uploadFile(dispatch, url, identificator, file, data) {
   return new Promise(resolve => {
     FileAPI.upload({
-      data: {
-        type: uploadType
-      },
+      data,
       files: {
         file
       },
@@ -57,7 +54,7 @@ function isImage(file) {
 }
 
 function isDoc(file) {
-  return DOC_TYPES.test(file.type);
+  return !isImage(file);
 }
 
 export function addUploadingImages(identificator, imageFiles) {
@@ -86,11 +83,11 @@ export function addUploadingDocs(identificator, docFiles) {
   };
 }
 
-export function uploadFiles(identificator, url, files, type, uploadType, concurrency = 2) {
+export function uploadFiles(identificator, url, files, type, data, concurrency = 2) {
   return ({ dispatch }) => {
     const uploadFilePromise = Promise.map(
       files,
-      file => uploadFile(dispatch, url, identificator, file, uploadType),
+      file => uploadFile(dispatch, url, identificator, file, data),
       { concurrency }
     );
 
@@ -101,6 +98,15 @@ export function uploadFiles(identificator, url, files, type, uploadType, concurr
       }
     };
   };
+}
+
+export function filterAllowedFiles(payload, allowedFileTypes) {
+  const allowedFilter = new RegExp(`${allowedFileTypes.join('|')}$`, 'i');
+
+  return new Promise(resolve => {
+    if (payload instanceof Event) FileAPI.getFiles(payload, file => allowedFilter.test(file.type), resolve);
+    else FileAPI.filterFiles(payload, file => allowedFilter.test(file.type), resolve);
+  });
 }
 
 export function filterImageFiles(payload) {

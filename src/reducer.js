@@ -4,9 +4,8 @@ import UploadingImage from './UploadingImage';
 import { List, Map, Record } from 'immutable';
 
 const InitialState = Record({
-  error: null,
-  uploadingDocuments: Map(),
-  uploadingImages: Map()
+  documents: Map(),
+  images: Map()
 });
 const initialState = new InitialState;
 
@@ -27,8 +26,8 @@ export default function fileUploadReducer(state = initialState, action) {
         uploadingImage => new UploadingImage(uploadingImage)
       );
 
-      return state.updateIn(['uploadingImages', identificator], uploadingImages =>
-        List(uploadingImages).concat(List(newUploadingImages))
+      return state.updateIn(['images', identificator], images =>
+        List(images).concat(List(newUploadingImages))
       );
     }
 
@@ -39,8 +38,8 @@ export default function fileUploadReducer(state = initialState, action) {
         uploadingDocument => new UploadingDocument({ file: uploadingDocument })
       );
 
-      return state.updateIn(['uploadingDocuments', identificator], uploadingDocuments =>
-        List(uploadingDocuments).concat(List(newUploadingDocument))
+      return state.updateIn(['documents', identificator], documents =>
+        List(documents).concat(List(newUploadingDocument))
       );
     }
 
@@ -77,8 +76,8 @@ export default function fileUploadReducer(state = initialState, action) {
 }
 
 function updateUploadingImage(state, identificator, file, updater) {
-  return state.updateIn(['uploadingImages', identificator], uploadingImages =>
-    List(uploadingImages).map(uploadingImage => // eslint-disable-line no-confusing-arrow
+  return state.updateIn(['images', identificator], images =>
+    List(images).map(uploadingImage => // eslint-disable-line no-confusing-arrow
       uploadingImage.file === file
         ? updater(uploadingImage)
         : uploadingImage
@@ -87,8 +86,8 @@ function updateUploadingImage(state, identificator, file, updater) {
 }
 
 function updateUploadingDocument(state, identificator, file, updater) {
-  return state.updateIn(['uploadingDocuments', identificator], uploadingDocuments =>
-    List(uploadingDocuments).map(uploadingDocument => // eslint-disable-line no-confusing-arrow
+  return state.updateIn(['documents', identificator], documents =>
+    List(documents).map(uploadingDocument => // eslint-disable-line no-confusing-arrow
       uploadingDocument.file === file
         ? updater(uploadingDocument)
         : uploadingDocument

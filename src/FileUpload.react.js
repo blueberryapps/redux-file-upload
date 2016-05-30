@@ -3,22 +3,24 @@ import Component from 'react-pure-render/component';
 import Promise from 'bluebird';
 import Radium from 'radium';
 import React, { PropTypes as RPT } from 'react';
-import { addUploadingDocs, addUploadingImages, filterDocFiles, filterImageFiles, uploadFiles } from './actions';
+import { addUploadingDocs, addUploadingImages, filterAllowedFiles, filterDocFiles, filterImageFiles, uploadFiles } from './actions';
 
-const DROPZONE_ID = 'fileInput';
 const FileAPI = process.env.IS_BROWSER ? Promise.promisifyAll(require('fileapi')) : null;
 
 @Radium
 export default class FileUpload extends Component {
 
   static propTypes = {
+    allowedFileTypes: RPT.array,
     children: RPT.element,
-    dropzoneStyle: RPT.object,
+    className: RPT.string,
+    data: RPT.object,
     dropzoneActiveStyle: RPT.object,
-    identificator: RPT.string.isRequired,
-    uploadType: RPT.string.isRequired,
+    dropzoneId: RPT.string.isRequired,
+    dropzoneStyle: RPT.object,
+    identifier: RPT.string,
+    multiple: RPT.bool,
     url: RPT.string.isRequired,
-    multiple: RPT.bool
   };
 
   static contextTypes = {
@@ -72,8 +74,10 @@ export default class FileUpload extends Component {
   @autobind
   async handleFileChange(event) {
     const {
-      identificator,
-      uploadType,
+      allowedFileTypes,
+      data,
+      dropzoneId,
+      identifier,
       url
      } = this.props;
 
@@ -84,22 +88,25 @@ export default class FileUpload extends Component {
     if (dragCount === 1)
       this.setState({ dropzoneActive: false, dragCount: dragCount - 1 });
 
-    const imageFiles = await filterImageFiles(event);
-    const docFiles = await filterDocFiles(event);
+    const allowedFiles = await filterAllowedFiles(event, allowedFileTypes);
+    const imageFiles = await filterImageFiles(allowedFiles);
+    const docFiles = await filterDocFiles(allowedFiles);
+    const reducerIdentificator = identifier || dropzoneId;
 
     if (!!imageFiles.length) {
-      dispatch(addUploadingImages(identificator, imageFiles));
-      dispatch(uploadFiles(identificator, url, imageFiles, 'image', uploadType));
+      dispatch(addUploadingImages(dropzoneId, imageFiles));
+      dispatch(uploadFiles(reducerIdentificator, url, imageFiles, 'image', data));
     }
     if (!!docFiles.length) {
-      dispatch(addUploadingDocs(identificator, docFiles));
-      dispatch(uploadFiles(identificator, url, docFiles, 'document', uploadType));
+      dispatch(addUploadingDocs(dropzoneId, docFiles));
+      dispatch(uploadFiles(reducerIdentificator, url, docFiles, 'document', data));
     }
   }
 
   @autobind
   preventDropEvent(event) {
-    if (event.target.id !== DROPZONE_ID) {
+    const { dropzoneId } = this.props;
+    if (event.target.id !== dropzoneId) {
       event.preventDefault();
       event.dataTransfer.effectAllowed = 'none'; // eslint-disable-line no-param-reassign
       event.dataTransfer.dropEffect = 'none'; // eslint-disable-line no-param-reassign
@@ -108,29 +115,29 @@ export default class FileUpload extends Component {
 
   @autobind
   preventDragOverEvent(event) {
-    if (event.target.id !== DROPZONE_ID) {
+    const { dropzoneId } = this.props;
+    if (event.target.id !== dropzoneId) {
       event.preventDefault();
       event.dataTransfer.dropEffect = 'none'; // eslint-disable-line no-param-reassign
     }
   }
 
   render() {
-    const { children, dropzoneActiveStyle, dropzoneStyle, multiple } = this.props;
-
+    const { children, className, dropzoneActiveStyle, dropzoneId, dropzoneStyle, multiple } = this.props;
     const { dropzoneActive } = this.state;
 
     return (
-      <div>
+      <div className={className}>
         <form ref="fileUpload">
           <label style={[dropzoneStyle || styles.dropzone.base, dropzoneActive && (dropzoneActiveStyle || styles.dropzone.active)]}>
             <input
-              id={DROPZONE_ID}
+              id={dropzoneId}
               multiple={multiple}
               ref="fileInput"
               style={styles.input}
               type="file"
             />
-          {children}
+            {children}
           </label>
         </form>
       </div>
