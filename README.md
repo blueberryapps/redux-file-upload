@@ -42,6 +42,8 @@ You can also pass something as children to the component (for example an upload 
 #Example
 
 ```jsx
+import { FileUpload } from 'redux-file-upload'
+
 <FileUpload
   data={{ type: 'picture' }}
   dropzoneId="fileUpload"
@@ -52,6 +54,9 @@ You can also pass something as children to the component (for example an upload 
   </button>
 </FileUpload>
 ```
+
+#Browser compatibility
+The component should work in all modern browsers including IE11+.
 
 #License
 MIT 2016

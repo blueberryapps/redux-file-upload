@@ -108,7 +108,6 @@ export default class FileUpload extends Component {
     const { dropzoneId } = this.props;
     if (event.target.id !== dropzoneId) {
       event.preventDefault();
-      event.dataTransfer.effectAllowed = 'none'; // eslint-disable-line no-param-reassign
       event.dataTransfer.dropEffect = 'none'; // eslint-disable-line no-param-reassign
     }
   }
