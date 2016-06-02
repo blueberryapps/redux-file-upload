@@ -82,13 +82,12 @@ export default class FileUpload extends Component {
      } = this.props;
 
     const { dispatch } = this.context.store;
-
     const { dragCount } = this.state;
 
     if (dragCount === 1)
       this.setState({ dropzoneActive: false, dragCount: dragCount - 1 });
 
-    const allowedFiles = await filterAllowedFiles(event, allowedFileTypes);
+    const allowedFiles = !!allowedFileTypes ? await filterAllowedFiles(event, allowedFileTypes) : event;
     const imageFiles = await filterImageFiles(allowedFiles);
     const docFiles = await filterDocFiles(allowedFiles);
     const reducerIdentificator = identifier || dropzoneId;

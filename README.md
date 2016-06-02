@@ -16,6 +16,9 @@ The package exposes the following:
 #FileUpload API
 Below are the props you can pass to the file upload component.
 
+##`allowedFileTypes`
+An array with filetypes that can be uploaded using the file upload. There are several that will be recognized automatically as images (jpg, jpeg, png, gif, tiff).
+
 ##`className`
 The component will be wrapped in a div with this class.
 
@@ -45,6 +48,7 @@ You can also pass something as children to the component (for example an upload 
 import { FileUpload } from 'redux-file-upload'
 
 <FileUpload
+  allowedFileTypes={['jpg', 'pdf']}
   data={{ type: 'picture' }}
   dropzoneId="fileUpload"
   url="https:/url.org/api/docs/upload"
