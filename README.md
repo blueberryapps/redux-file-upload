@@ -12,6 +12,8 @@ The package exposes the following:
 - `actions` - you can use these to implement your own custom logic if you need (e.g. add more dropzones for a single uploader). Check the source code to see what actions are available.
 - `reducer` - add this to your composed reducer.
 - `FileUpload` - the main component (see its API below).
+- `UploadingDocument` - an immutable record representing the way a generic document is represented in store.
+- `UploadingImage` - an immutable record representing the way an image is represented in store.
 
 #FileUpload API
 Below are the props you can pass to the file upload component.
