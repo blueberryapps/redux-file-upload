@@ -1,3 +1,5 @@
+import Promise from 'bluebird';
+
 const FileAPI = process.env.IS_BROWSER ? require('fileapi') : null;
 const IMAGE_TYPES = /^image\/(jpe?g|png|gif|jf?if|tiff?)$/i;
 
