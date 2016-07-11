@@ -1,6 +1,6 @@
 {
   "name": "@blueberry/redux-file-upload",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Redux-friendly file upload made easy",
   "main": "lib/index.js",
   "author": "Blueberry",
