@@ -7,6 +7,7 @@ test('Input has the passed ID', t => {
   const id = 'file-upload-id';
   const component = shallow(
     <FileUpload
+      url={'api/v1/mock-api'}
       dropzoneId={id}
     />);
 

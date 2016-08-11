@@ -24,7 +24,7 @@ export default class FileUpload extends Component {
   };
 
   static contextTypes = {
-    store: RPT.object.isRequired
+    store: RPT.object
   };
 
   state = {
