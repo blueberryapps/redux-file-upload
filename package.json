@@ -50,19 +50,19 @@
     "eslint-plugin-import": "^1.0.3",
     "eslint-plugin-jsx-a11y": "^1.0.4",
     "eslint-plugin-react": "^5.0.1",
-    "react-addons-test-utils": "^15.3.0",
+    "react-addons-test-utils": ">=0.14",
     "rimraf": "^2.4.3"
   },
   "dependencies": {
-    "bluebird": "^3.0.5",
-    "core-decorators": "^0.12.3",
-    "fileapi": "^2.0.20",
-    "immutable": "^3.8.1",
-    "radium": "^0.18.1",
-    "react": "^15.3.0",
-    "react-dom": "^15.3.0",
-    "react-pure-render": "^1.0.2",
-    "react-redux": "^4.4.5",
-    "redux": "^3.5.2"
+    "bluebird": ">=3",
+    "core-decorators": ">=0.12",
+    "fileapi": ">=2",
+    "immutable": ">=3",
+    "radium": ">=0.15",
+    "react": ">=0.13",
+    "react-dom": ">=0.13",
+    "react-pure-render": ">=1",
+    "react-redux": ">=4",
+    "redux": ">=3"
   }
 }

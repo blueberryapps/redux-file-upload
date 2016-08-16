@@ -5,6 +5,7 @@ node_js:
   - "6"
 script:
   - npm run build:lib
+  - npm run test
 branches:
   only:
     - master
