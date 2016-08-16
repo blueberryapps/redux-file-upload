@@ -1,30 +1,32 @@
+import * as actions from './actions';
 import autobind from 'core-decorators/lib/autobind';
 import Component from 'react-pure-render/component';
 import Promise from 'bluebird';
 import Radium from 'radium';
 import React, { PropTypes as RPT } from 'react';
-import { addUploadingDocs, addUploadingImages, filterAllowedFiles, filterDocFiles, filterImageFiles, uploadFiles } from './actions';
+import { connect } from 'react-redux';
+import { filterAllowedFiles, filterDocFiles, filterImageFiles } from './helpers';
 
 const FileAPI = process.env.IS_BROWSER ? Promise.promisifyAll(require('fileapi')) : null;
 
+@connect(null, actions)
 @Radium
 export default class FileUpload extends Component {
 
   static propTypes = {
-    allowedFileTypes: RPT.array,
-    children: RPT.element,
-    className: RPT.string,
-    data: RPT.object,
-    dropzoneActiveStyle: RPT.object,
-    dropzoneId: RPT.string.isRequired,
-    dropzoneStyle: RPT.object,
-    identifier: RPT.string,
-    multiple: RPT.bool,
-    url: RPT.string.isRequired,
-  };
-
-  static contextTypes = {
-    store: RPT.object.isRequired
+    allowedFileTypes:     RPT.array,
+    children:             RPT.element,
+    className:            RPT.string,
+    data:                 RPT.object,
+    addUploadingDocs:     RPT.func.isRequired,
+    addUploadingImages:   RPT.func.isRequired,
+    uploadFiles:          RPT.func.isRequired,
+    dropzoneActiveStyle:  RPT.object,
+    dropzoneId:           RPT.string.isRequired,
+    dropzoneStyle:        RPT.object,
+    identifier:           RPT.string,
+    multiple:             RPT.bool,
+    url:                  RPT.string.isRequired,
   };
 
   state = {
@@ -74,14 +76,16 @@ export default class FileUpload extends Component {
   @autobind
   async handleFileChange(event) {
     const {
+      addUploadingDocs,
+      addUploadingImages,
       allowedFileTypes,
       data,
       dropzoneId,
+      uploadFiles,
       identifier,
       url
      } = this.props;
 
-    const { dispatch } = this.context.store;
     const { dragCount } = this.state;
 
     if (dragCount === 1)
@@ -93,12 +97,12 @@ export default class FileUpload extends Component {
     const reducerIdentificator = identifier || dropzoneId;
 
     if (!!imageFiles.length) {
-      dispatch(addUploadingImages(dropzoneId, imageFiles));
-      dispatch(uploadFiles(reducerIdentificator, url, imageFiles, 'image', data));
+      addUploadingImages(dropzoneId, imageFiles);
+      uploadFiles(reducerIdentificator, url, imageFiles, 'image', data);
     }
     if (!!docFiles.length) {
-      dispatch(addUploadingDocs(dropzoneId, docFiles));
-      dispatch(uploadFiles(reducerIdentificator, url, docFiles, 'document', data));
+      addUploadingDocs(dropzoneId, docFiles);
+      uploadFiles(reducerIdentificator, url, docFiles, 'document', data);
     }
   }
 

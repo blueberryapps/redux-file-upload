@@ -1,7 +1,7 @@
 import Promise from 'bluebird';
+import { isDoc, isImage } from './helpers';
 
 const FileAPI = process.env.IS_BROWSER ? require('fileapi') : null;
-const IMAGE_TYPES = /^image\/(jpe?g|png|gif|jf?if|tiff?)$/i;
 
 export const THUMBNAIL_WIDTH = 200;
 export const THUMBNAIL_HEIGHT = 200;
@@ -51,14 +51,6 @@ function uploadFile(dispatch, url, identificator, file, data) {
   });
 }
 
-function isImage(file) {
-  return IMAGE_TYPES.test(file.type);
-}
-
-function isDoc(file) {
-  return !isImage(file);
-}
-
 export function addUploadingImages(identificator, imageFiles) {
   return {
     type: FILE_UPLOAD_ADD_UPLOADING_IMAGES,
@@ -100,29 +92,6 @@ export function uploadFiles(identificator, url, files, type, data, concurrency =
       }
     };
   };
-}
-
-export function filterAllowedFiles(payload, allowedFileTypes) {
-  const allowedFilter = new RegExp(`${allowedFileTypes.join('|')}$`, 'i');
-
-  return new Promise(resolve => {
-    if (payload instanceof Event) FileAPI.getFiles(payload, file => allowedFilter.test(file.type), resolve);
-    else FileAPI.filterFiles(payload, file => allowedFilter.test(file.type), resolve);
-  });
-}
-
-export function filterImageFiles(payload) {
-  return new Promise(resolve => {
-    if (payload instanceof Event) FileAPI.getFiles(payload, isImage, resolve);
-    else FileAPI.filterFiles(payload, isImage, resolve);
-  });
-}
-
-export function filterDocFiles(payload) {
-  return new Promise(resolve => {
-    if (payload instanceof Event) FileAPI.getFiles(payload, isDoc, resolve);
-    else FileAPI.filterFiles(payload, isDoc, resolve);
-  });
 }
 
 export function fileProgress(identificator, event, file, fileType) {

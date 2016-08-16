@@ -1,6 +1,6 @@
 {
   "name": "redux-file-upload",
-  "version": "0.0.10",
+  "version": "0.0.12",
   "description": "Redux-friendly file upload made easy",
   "main": "lib/index.js",
   "author": "Blueberry",
@@ -56,12 +56,14 @@
   "dependencies": {
     "bluebird": ">=3",
     "core-decorators": ">=0.12",
-    "fileapi": ">=2",
+    "fileapi": "^2.0.21",
     "immutable": ">=3",
     "radium": ">=0.15",
+    "react-pure-render": ">=1"
+  },
+  "peerDependencies": {
     "react": ">=0.13",
     "react-dom": ">=0.13",
-    "react-pure-render": ">=1",
     "react-redux": ">=4",
     "redux": ">=3"
   }
