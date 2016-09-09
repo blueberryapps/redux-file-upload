@@ -94,15 +94,15 @@ export default class FileUpload extends Component {
     const allowedFiles = !!allowedFileTypes ? await filterAllowedFiles(event, allowedFileTypes) : event;
     const imageFiles = await filterImageFiles(allowedFiles);
     const docFiles = await filterDocFiles(allowedFiles);
-    const reducerIdentificator = identifier || dropzoneId;
+    const id = identifier || dropzoneId;
 
     if (!!imageFiles.length) {
-      addUploadingImages(dropzoneId, imageFiles);
-      uploadFiles(reducerIdentificator, url, imageFiles, 'image', data);
+      addUploadingImages(id, imageFiles);
+      uploadFiles(id, url, imageFiles, 'image', data);
     }
     if (!!docFiles.length) {
-      addUploadingDocs(dropzoneId, docFiles);
-      uploadFiles(reducerIdentificator, url, docFiles, 'document', data);
+      addUploadingDocs(id, docFiles);
+      uploadFiles(id, url, docFiles, 'document', data);
     }
   }
 
