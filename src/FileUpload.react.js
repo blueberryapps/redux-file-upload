@@ -1,13 +1,14 @@
 import * as actions from './actions';
 import autobind from 'core-decorators/lib/autobind';
 import Component from 'react-pure-render/component';
+import isServer from 'detect-node';
 import Promise from 'bluebird';
 import Radium from 'radium';
 import React, { PropTypes as RPT } from 'react';
 import { connect } from 'react-redux';
 import { filterAllowedFiles, filterDocFiles, filterImageFiles } from './helpers';
 
-const FileAPI = process.env.IS_BROWSER ? Promise.promisifyAll(require('fileapi')) : null;
+const FileAPI = !isServer ? Promise.promisifyAll(require('fileapi')) : null;
 
 @connect(null, actions)
 @Radium
@@ -81,8 +82,8 @@ export default class FileUpload extends Component {
       allowedFileTypes,
       data,
       dropzoneId,
-      uploadFiles,
       identifier,
+      uploadFiles,
       url
      } = this.props;
 

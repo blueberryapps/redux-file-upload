@@ -1,7 +1,8 @@
+import isServer from 'detect-node';
 import Promise from 'bluebird';
 import { isDoc, isImage } from './helpers';
 
-const FileAPI = process.env.IS_BROWSER ? require('fileapi') : null;
+const FileAPI = !isServer ? require('fileapi') : null;
 
 export const THUMBNAIL_WIDTH = 200;
 export const THUMBNAIL_HEIGHT = 200;
