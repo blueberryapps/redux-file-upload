@@ -6,6 +6,8 @@ There aren't any simple yet customizable file uploader packages that would work 
 #Install
 `npm install --save redux-file-upload`
 
+Please note - a middleware that passes `dispatch` to actions, e.g. redux-thunk, redux-promise-middleware, is required for this package to work properly.
+
 #API
 The package exposes the following:
 

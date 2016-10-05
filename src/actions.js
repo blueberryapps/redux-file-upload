@@ -79,7 +79,8 @@ export function addUploadingDocs(identificator, docFiles) {
 }
 
 export function uploadFiles(identificator, url, files, type, data, concurrency = 2) {
-  return ({ dispatch }) => {
+  return params => {
+    const dispatch = typeof params === 'function' ? params : params.dispatch;
     const uploadFilePromise = Promise.map(
       files,
       file => uploadFile(dispatch, url, identificator, file, data),

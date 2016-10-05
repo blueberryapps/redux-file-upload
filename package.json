@@ -1,6 +1,6 @@
 {
   "name": "redux-file-upload",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "Redux-friendly file upload made easy",
   "main": "lib/index.js",
   "author": "Blueberry",
@@ -50,21 +50,21 @@
     "eslint-plugin-import": "^1.0.3",
     "eslint-plugin-jsx-a11y": "^1.0.4",
     "eslint-plugin-react": "^5.0.1",
+    "react": ">=0.13",
     "react-addons-test-utils": ">=0.14",
     "rimraf": "^2.4.3"
   },
   "dependencies": {
     "bluebird": ">=3",
     "core-decorators": ">=0.12",
-    "detect-node": "^2.0.3",
-    "fileapi": "^2.0.21",
+    "detect-node": ">=2",
+    "fileapi": ">=2",
     "immutable": ">=3",
     "radium": ">=0.15",
     "react-pure-render": ">=1"
   },
   "peerDependencies": {
     "react": ">=0.13",
-    "react-dom": ">=0.13",
     "react-redux": ">=4",
     "redux": ">=3"
   }
