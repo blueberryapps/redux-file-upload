@@ -112,10 +112,11 @@ export function fileComplete(identificator, error, xhr, file) {
       payload: { identificator, file, error, isImage: isImage(file), isDoc: isDoc(file) }
     };
 
-  const { photo } = JSON.parse(xhr.response);
+  const response = JSON.parse(xhr.response);
+  const { photo } = response;
 
   return {
     type: FILE_UPLOAD_COMPLETE,
-    payload: { identificator, file, photo }
+    payload: { identificator, file, photo, response }
   };
 }
