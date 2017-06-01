@@ -1,10 +1,10 @@
 import * as actions from './actions';
 import autobind from 'core-decorators/lib/autobind';
-import Component from 'react-pure-render/component';
 import isServer from 'detect-node';
 import Promise from 'bluebird';
 import Radium from 'radium';
-import React, { PropTypes as RPT } from 'react';
+import React, { PureComponent as Component } from 'react';
+import RPT from 'prop-types';
 import { connect } from 'react-redux';
 import { filterAllowedFiles, filterDocFiles, filterImageFiles } from './helpers';
 
