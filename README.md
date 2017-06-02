@@ -1,4 +1,4 @@
-# redux-file-upload
+# redux-file-upload [![Dependency Status](https://dependencyci.com/github/blueberryapps/redux-file-upload/badge)](https://dependencyci.com/github/blueberryapps/redux-file-upload)
 
 # Motivation
 There aren't any simple yet customizable file uploader packages that would work nicely with Redux. redux-file-upload is here to fill the gap!
