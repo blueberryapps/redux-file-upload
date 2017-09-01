@@ -53,7 +53,9 @@
     "eslint-plugin-react": "^5.0.1",
     "react": ">=15.5",
     "react-addons-test-utils": ">=0.14",
-    "rimraf": "^2.4.3",
+    "react-redux": "^4.4.8",
+    "redux": "^3.7.2",
+    "rimraf": "^2.4.3"
   },
   "dependencies": {
     "bluebird": ">=3",

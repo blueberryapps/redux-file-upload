@@ -10,11 +10,9 @@ const compiler = webpack(config);
 const PORT = process.env.PORT || 3000;
 
 app.use(webpackDevMiddleware(compiler, { publicPath: config.output.publicPath }));
-app.use((webpackHotMiddleware)(compiler, { path: '/__webpack_hmr' }));
+app.use(webpackHotMiddleware(compiler, { path: '/__webpack_hmr' }));
 
 app.get('/', (req, res) => {
-  console.log('GET /');
-
   res.send(`
     <!doctype html>
     <html lang="en">
