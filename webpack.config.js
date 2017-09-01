@@ -5,10 +5,11 @@ const webpack = require('webpack');
 
 const PORT = process.env.PORT || 3000;
 
+
 module.exports = {
   entry: {
     app: [
-      `webpack-hot-middleware/client`,
+      `webpack-hot-middleware/client?path=http://localhost:${PORT}/__webpack_hmr`,
       './examples/index.js'
     ],
   },

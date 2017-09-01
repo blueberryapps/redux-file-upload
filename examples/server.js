@@ -10,7 +10,7 @@ const compiler = webpack(config);
 const PORT = process.env.PORT || 3000;
 
 app.use(webpackDevMiddleware(compiler, { publicPath: config.output.publicPath }));
-app.use((webpackHotMiddleware)(compiler));
+app.use((webpackHotMiddleware)(compiler, { path: '/__webpack_hmr' }));
 
 app.get('/', (req, res) => {
   console.log('GET /');
@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
       <body>
         <noscript>Please enable JS.</noscript>
         <div id="app"></div>
-        <script src="${config.output.publicPath}app.js" />
+        <script src="${config.output.publicPath}app.js"></script>
       </body>
     </html>
   `);
