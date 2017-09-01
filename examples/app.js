@@ -1,12 +1,11 @@
 import React from 'react';
-
-const Provider = ({ children }) => <div>{children}</div>
+import ReduxThunkExample from './redux-thunk-example'
 
 export default class App extends React.Component {
   render() {
     return (
       <div>
-        "example application"
+        <ReduxThunkExample />
       </div>
     );
   }
