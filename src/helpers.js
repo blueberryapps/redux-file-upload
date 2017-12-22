@@ -1,6 +1,14 @@
 import Promise from 'bluebird';
 
-const FileAPI = process.env.IS_BROWSER ? require('fileapi') : null;
+const hasFileApi = () => {
+  try {
+    return !!(window.File && window.FileList && window.FileReader);
+  } catch (e) {
+    return false;
+  }
+};
+
+const FileAPI = hasFileApi() ? require('fileapi') : null;
 const IMAGE_TYPES = /^image\/(jpe?g|png|gif|jf?if|tiff?)$/i;
 
 export function isImage(file) {
